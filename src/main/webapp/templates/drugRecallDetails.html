@@ -1,0 +1,28 @@
+<div class="panel panel-info">
+	<div class="panel-heading">
+		<h2><b><%=data.short_product_description%></b></h2>
+	</div>
+	<div class="panel-body">
+		<div class="row" id="images" style="display:none;">
+			<!-- if image data exists, it goes here -->
+		</div>
+		<div class="row">
+			<div class="col-xs-9">
+				<h4><b>Product Description</b></h4>
+				<p><%=data.product_description%></p>
+				<h4><b>Reason for Recall</b></h4>
+				<p><%=data.reason_for_recall%></p>
+				<h4><b>Classification</b></h4>
+				<p><%=data.classification%></p>
+				<h4><b>Status</b></h4>
+				<p><%=data.status%></p>
+				<h4><b>Recall Number</b></h4>
+				<p><%=data.recall_number%></p>
+				<h4><b>Report Date</b></h4>
+				<p><%=data.report_date%></p>
+				<h4><b>Products referenced in this report</b></h4>
+				<p><% if(data.product.length > 0) {%><%= data.product %> <%} else {%>N/A<%}%></p>
+			</div>
+		</div>
+	</div>
+</div>

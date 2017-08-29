@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="Author" content="James Caple, james.caple@devtechnology.com">
+  <title>Drug Recall Information Center</title>
+  <!-- Use min once things are more or less working -->
+  <link href="frameworks/bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body class="devBackgroundE">
+	<div class="container-full">
+		<h1><span class="sr-only">Drug Recall Information Center</span></h1>
+		<div class="header dricHeader text-center">
+			<img src="img/icons/DRIC-logo2.png" title="Drug Recall Information Center" alt="DRIC - Drug Recall Information Center" border=0 class="img-responsive logo">
+		</div>
+	</div>
+	<nav class="navbar navbar-default text-center" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle pull-left collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="true">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse in" id="navbar-collapse">
+				<div class="navbar-form" role="search">
+					<div class="input-group">
+						<label for="quickSearchFld" class="sr-only">Drug Recall Quick Search Field</label>
+						<input type="text" class="form-control" placeholder="Search (e.g., nexium)..." id="quickSearchFld" aria-label="Search Field">
+						<span class="input-group-btn">
+							<button type="button" id="quickSearchButton" class="btn btn-default btn-primary" title="Drug Recall Quick Search" onclick="dric.performQuickSearch();">Search</button>
+						</span>
+					</div>
+					<button type="button" id="advancedSearchShowButton" class="btn btn-default" onclick="dric.showAdvancedSearch();" title="Drug Recall Advanced Search">Advanced Search</button>
+					<button type="button" id="clearSearchButton" class="btn btn-default" onclick="dric.resetQuickSearch();" title="Reset Results To Latest In Current Month">Clear</button>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<!-- Modal Dialogs -->
+	<div class="modal" id="advancedSearchModal">
+		<div class="modal-dialog modal-dialog-center">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" id="closeAdvancedSearchButton" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h2 class="modal-title">Advanced Drug Recall Search</h2>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="input-group">
+								<label for="advDrugSrchForm" title="Enter Drug Name">Enter Drug Name:</label>
+								<input class="form-control" type="text" title="Drug Search Input Field" placeholder="Search (e.g., nexium)..." id="advDrugSrchForm">
+							</div>
+						</div>
+					</div>
+					<div class="row spacer">
+						&nbsp;
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<span title="Filters For Search Results">Filter Criteria For Search Results:</span>
+							<div class="input-group">
+								<div class="input-group-btn advFilters">
+									<button type="button" id="timeFilterButton" class="btn btn-default dropdown-toggle" 
+										data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Filter by recall time period">
+										Recalls In Last:<span class="caret"></span></button>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="#" 
+												onclick="dric.setAdvancedFilterString($('#recallTimeFilter'),'ONEMONTH');">
+												1 Month
+											</a>
+										</li>
+										<li>
+											<a href="#" 
+												onclick="dric.setAdvancedFilterString($('#recallTimeFilter'), 'SIXMONTH');">
+												6 Months
+											</a>
+										</li>
+										<li>
+											<a href="#" 
+												onclick="dric.setAdvancedFilterString($('#recallTimeFilter'), 'ALL');">
+												All
+											</a>
+										</li>
+									</ul>
+								</div><!-- /btn-group -->
+								<label for="recallTimeFilter" class="sr-only">Time Filter</label>
+								<input type="text" class="form-control" id="recallTimeFilter" readonly aria-label="Filter value for timeframe in which to retrieve recalls.  1 month, 6 months or all months." title="Filtered recall period.">
+							</div><!-- /input-group -->
+							<div class="spacer">&nbsp;</div>
+							<div class="input-group">
+								<div class="input-group-btn btn-block advFilters">
+									<button type="button" class="btn btn-default dropdown-toggle" 
+										data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Filter by recall status">
+										Recall Status:&nbsp;&nbsp;<span class="caret"></span></button>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="#" onclick="dric.setAdvancedFilterString($('#recallStatusFilter'), 'ONGOING');">
+												Ongoing
+											</a>
+										</li>
+										<li>
+											<a href="#" onclick="dric.setAdvancedFilterString($('#recallStatusFilter'), 'COMPLETED');">
+												Completed
+											</a>
+										</li>
+										<li>
+											<a href="#" onclick="dric.setAdvancedFilterString($('#recallStatusFilter'), 'TERMINATED');">
+												Terminated
+											</a>
+										</li>
+										<li>
+											<a href="#" onclick="dric.setAdvancedFilterString($('#recallStatusFilter'), 'ALL');">
+												All
+											</a>
+										</li>
+									</ul>
+								</div><!-- /btn-group -->
+								<label for="recallStatusFilter" class="sr-only">Status Filter</label>
+								<input type="text" class="form-control" id="recallStatusFilter" readonly aria-label="Search filter for drug classification.  Ongoing, Completed, Terminated or All." title="Filtered by recall status">
+							</div><!-- /input-group -->
+							<div class="spacer">&nbsp;</div>
+							<div class="input-group">
+								<div class="input-group-btn advFilters">
+									<button type="button" class="btn btn-default dropdown-toggle" 
+										data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Filtered by classification">
+										Classification:&nbsp;&nbsp;<span class="caret"></span></button>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="#" onclick="dric.setAdvancedFilterString($('#classificationFilter'), 'CLASS I');">
+												Class I
+											</a>
+										</li>
+										<li>
+											<a href="#" onclick="dric.setAdvancedFilterString($('#classificationFilter'), 'CLASS II');">
+												Class II 
+											</a>
+										</li>
+										<li>
+											<a href="#" onclick="dric.setAdvancedFilterString($('#classificationFilter'), 'CLASS III');">
+												Class III 
+											</a>
+										</li>
+										<li>
+											<a href="#" onclick="dric.setAdvancedFilterString($('#classificationFilter'), 'ALL');">
+												All
+											</a>
+										</li>
+									</ul>
+								</div><!-- /btn-group -->
+								<label for="classificationFilter" class="sr-only">Classification Filter</label>
+								<input type="text" class="form-control" id="classificationFilter" readonly aria-label="Search filter for drug classification type.  Class I, Class II, Class III or All." title="Filtered by classification.">
+							</div><!-- /input-group -->
+						</div><!-- /.col-lg-6 -->
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" onclick="dric.executeAdvancedSearch();">Search</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Search Results Details Modal -->
+	<div class="modal" id="searchResultsModal">
+		<div class="modal-dialog modal-dialog-center">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h3 class="modal-title">Drug Recall Report Details</h3>
+				</div>
+				<div class="modal-body" id="drugRecallDetailsBody">
+					filled by template
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div> <!-- End Modal Dialog Definitions -->
+	<div class="container-full" id="mainContent">
+		<!-- Main Content: Search Results -->
+	</div>
+	<footer class="footer">
+		<a href="http://www.devtechnology.com" target="_new">
+			<img src="img/developedby.png" class="img-responsive text-center" title="Dev Technology Group" alt="Developed By Dev Technology Group" sr-only="Developed By Dev Technology Group, http://www.devtechnology.com">
+		</a>
+	</footer>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery-1.11.3.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="frameworks/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+<!-- underscrore.min.js -->
+<script src="js/underscore-min.js"></script>
+<!-- Drug Recall Information Center Javascript -->
+<script src="js/dric.js"></script>
+<script>
+	$(document).ready(function() {
+		// quick search execute when pressing enter
+		$("#quickSearchFld").keyup(function (e) {
+			if (e.keyCode == 13) {
+				dric.performQuickSearch();
+			}
+		});
+		$(".dricHeader").click(function() {
+			dric.resetQuickSearch();
+		});
+	});
+	// This code centers the modal dialogs in the middle of the screen
+	$('.modal').on('shown.bs.modal', function() {
+		$(this).find('.modal-dialog').css({
+			'margin-top': function () {
+				return -($(this).outerHeight() / 2);
+			},
+			'margin-left': function () {
+				return -($(this).outerWidth() / 2);
+			}
+		});
+	});
+</script>
+</body>
+</html>
