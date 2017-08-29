@@ -8,7 +8,9 @@
 	<name>dric-api-webapp</name>
 	<profiles>
 		<profile>
+				<id>openshift</id>
 				<id>sonar</id>
+			
 				<activation>
 						<activeByDefault>true</activeByDefault>
 				</activation>
