@@ -8,7 +8,6 @@
 	<name>dric-api-webapp</name>
 	<profiles>
 		<profile>
-				<id>openshift</id>
 				<id>sonar</id>
 			
 				<activation>
@@ -37,6 +36,7 @@
       <url>https://ci.odds.secureci.com/nexus/repository/maven-snapshots</url>
    </snapshotRepository>
   </distributionManagement> 
+	<id>openshift</id>
 	<build>
 		<finalName>dric-api-webapp</finalName>
 		<plugins>
