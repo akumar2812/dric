@@ -7,9 +7,9 @@
 	<version>1.1-SNAPSHOT</version>
 	<name>dric-api-webapp</name>
 	<profiles>
+
 		<profile>
 				<id>sonar</id>
-			
 				<activation>
 						<activeByDefault>true</activeByDefault>
 				</activation>
@@ -29,40 +29,43 @@
 						</sonar.host.url>
 				</properties>
 		</profile>
+		<profile>
+			<id>openshift</id>
+			<build>
+				<finalName>dric-api-webapp</finalName>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>2.5.1</version>
+						<inherited>true</inherited>
+						<configuration>
+							<source>1.7</source>
+							<target>1.7</target>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.wildfly.plugins</groupId>
+						<artifactId>wildfly-maven-plugin</artifactId>
+						<version>1.1.0.Alpha1</version>
+						<configuration>
+							<hostname>${wildfly-hostname}</hostname>
+							<port>${wildfly-port}</port>
+							<username>${wildfly-username}</username>
+							<password>${wildfly-password}</password>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+			
+		</profile>
 	</profiles>
 	<distributionManagement>
-   <snapshotRepository>
-      <id>nexus-snapshots</id>
-      <url>https://ci.odds.secureci.com/nexus/repository/maven-snapshots</url>
-   </snapshotRepository>
-  </distributionManagement> 
-	<id>openshift</id>
-	<build>
-		<finalName>dric-api-webapp</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
-				<inherited>true</inherited>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.wildfly.plugins</groupId>
-				<artifactId>wildfly-maven-plugin</artifactId>
-				<version>1.1.0.Alpha1</version>
-				<configuration>
-					<hostname>${wildfly-hostname}</hostname>
-					<port>${wildfly-port}</port>
-					<username>${wildfly-username}</username>
-					<password>${wildfly-password}</password>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+		<snapshotRepository>
+			<id>nexus-snapshots</id>
+			<url>https://ci.odds.secureci.com/nexus/repository/maven-snapshots</url>
+		</snapshotRepository>
+ 	</distributionManagement> 
 	<dependencies>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
